@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import App from "../App";
 
 describe("renders main content", () => {
-    test("renders learn react link", () => {
+    test("renders Title properly", () => {
         render(<App />);
         const titleElement = screen.getByText(/Kanban Board/i);
         expect(titleElement).toBeInTheDocument();
