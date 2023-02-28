@@ -9,9 +9,9 @@ describe("renders ToDo content", () => {
         expect(titleElement).toBeInTheDocument();
     });
 
-//     test("renders 'add a new task'", () => {
-//       render(<ToDo />);
-//       const subtitleElement = screen.getByText(/add a new task/i);
-//       expect(subtitleElement).toBeInTheDocument();
-//   });
+    test("renders 'add a new task'", () => {
+      render(<ToDo />);
+      const subtitleElement = screen.getByText(/add a new task/i);
+      expect(subtitleElement).toBeInTheDocument();
+  });
 });

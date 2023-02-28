@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { TaskType } from "../App";
+import { useEffect, useState } from "react";
+import { EditTaskType } from "./ToDo";
 
-const AddTask = ({ taskList, setTaskList }: TaskType) => {
-    const [addModal, setAddModal] = useState<boolean>(false);
+const EditTask = ({ task, index, taskList, setTaskList }: EditTaskType) => {
+    const [editModal, setEditModal] = useState<boolean>(false);
     const [projectName, setProjectName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
+
+    useEffect(() => {
+        setProjectName(task.projectName);
+        setTaskDescription(task.taskDescription);
+
+    }, [])
 
     const handleInput = (e: React.SyntheticEvent) => {
         let target = e.target as HTMLInputElement;
@@ -14,40 +20,34 @@ const AddTask = ({ taskList, setTaskList }: TaskType) => {
         if (name === "taskDescription") setTaskDescription(value);
     };
 
-    const handleAdd = (e: React.MouseEvent<HTMLElement>) => {
+    const handleUpdate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
+        let taskIndex = taskList.indexOf(task);
+        taskList.splice(taskIndex, 1);
+
         setTaskList([...taskList, { projectName, taskDescription }]);
-        setAddModal(false);
-        setProjectName("");
-        setTaskDescription("");
-        console.log(taskList);
+        setEditModal(false);
     };
-
-
 
     return (
         <>
             <button
-                className="bg-blue-500 text-white uppercase text-sm font-semibold py-1 mx-1.5 p-2 pr-2.5 rounded hover:opacity-70"
-                type="button"
-                title="openModal"
-                onClick={() => {
-                    setAddModal(true);
-                }}
+                className="bg-gray-400 text-white text-sm-uppercase font-semibold py-1.5 px-3 rounded-lg"
+                onClick={() => setEditModal(true)}
             >
-                +New
+                Edit
             </button>
-            {addModal ? (
+            {editModal ? (
                 <>
                     <div className="flex items-center justify-center overflow-x-hidden overflow-y-auto fixed inset-0 z-100">
                         <div className="w-9/12 max-w-lg bg-white border rounded-lg shadow-md relative flex flex-col">
                             <div className="flex flex-row rounded justify-between p-5 bg-white border-b border-slate-200 rounded-t">
                                 <h3 className="text-3xl font-semibold">
-                                    Add New Task
+                                    Edit Task
                                 </h3>
                                 <button
                                     className="px-1 text-gray-400 float-right text-3xl leading-none font-semibold block"
-                                    onClick={() => setAddModal(false)}
+                                    onClick={() => setEditModal(false)}
                                 >
                                     x
                                 </button>
@@ -92,9 +92,9 @@ const AddTask = ({ taskList, setTaskList }: TaskType) => {
                             <div className="flex justify-end p-6 border-t border-slate-200 rounded-b">
                                 <button
                                     className="bg-blue-500 text-white font-semibold uppercase text-sm px-6 py-3 rounded hover:opacity-70"
-                                    onClick={handleAdd}
+                                    onClick={handleUpdate}
                                 >
-                                    Add Task
+                                    Update Task
                                 </button>
                             </div>
                         </div>
@@ -105,4 +105,4 @@ const AddTask = ({ taskList, setTaskList }: TaskType) => {
     );
 };
 
-export default AddTask;
+export default EditTask;

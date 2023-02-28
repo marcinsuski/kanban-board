@@ -31,12 +31,12 @@ function App() {
                 <p className="text-xl my-2"> to add a new task</p>
             </div>
             <div>
-                <h2 className="ml-6 text-xl font-semibold w-3/4 max-w-lg my-2 py-1 px-2 bg-gray-300">
+                <h2 className="ml-6 text-xl font-semibold w-3/4 max-w-lg my-4 py-2 px-2 bg-gray-300">
                     ToDo:{" "}
                 </h2>
-                {taskList.map((task, i) => (
+                {taskList.slice(0).reverse().map((task, i) => (
                     <>
-                        <ToDo key={i} task={task} />
+                        <ToDo key={new Date().getTime()} task={task} index={i} taskList={taskList} setTaskList={setTaskList} />
                     </>
                 ))}
             </div>

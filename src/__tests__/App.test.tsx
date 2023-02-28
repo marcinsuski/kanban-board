@@ -13,4 +13,10 @@ describe("renders main content", () => {
       const subtitleElement = screen.getByText(/add a new task/i);
       expect(subtitleElement).toBeInTheDocument();
   });
+
+    test("renders 'ToDo'", () => {
+      render(<App />);
+      const titleElement2 = screen.getByText(/ToDO/i);
+      expect(titleElement2).toBeInTheDocument();
+  });
 });
