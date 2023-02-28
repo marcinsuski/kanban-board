@@ -1,29 +1,37 @@
 import { useState } from "react";
 import { TaskType } from "../App";
 
-const AddTask = ({id, taskList, setTaskList }: TaskType) => {
+const AddTask = ({ id, taskList, setTaskList }: TaskType) => {
     const [addModal, setAddModal] = useState<boolean>(false);
     const [projectName, setProjectName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleInput = (e: React.SyntheticEvent) => {
         let target = e.target as HTMLInputElement;
         const { name, value } = target;
 
-        if (name === "projectName") setProjectName(value);
+        if (name === "projectName") {
+            setProjectName(value);
+            setErrorMessage("")    
+        };
+        if (name === "projectName" && value === "") {
+            setErrorMessage("Enter project name to continiue");
+        }
         if (name === "taskDescription") setTaskDescription(value);
     };
 
     const handleAdd = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        setTaskList([...taskList, { projectName, taskDescription }]);
-        setAddModal(false);
-        setProjectName("");
-        setTaskDescription("");
-        console.log(taskList);
+        if (!projectName) {
+            setErrorMessage("Enter project name to continiue");
+        } else {
+            setTaskList([...taskList, { projectName, taskDescription }]);
+            setAddModal(false);
+            setProjectName("");
+            setTaskDescription("");
+        }
     };
-
-
 
     return (
         <>
@@ -61,7 +69,7 @@ const AddTask = ({id, taskList, setTaskList }: TaskType) => {
                                         Project Name
                                     </label>
                                     <input
-                                        className="w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-5 leading-tight focus: outline-none focus:bg-white"
+                                        className="w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus: outline-none focus:bg-white"
                                         id="project-name"
                                         name="projectName"
                                         type="text"
@@ -70,6 +78,9 @@ const AddTask = ({id, taskList, setTaskList }: TaskType) => {
                                         placeholder="Project name"
                                         required
                                     />
+                                    <p className="text-red-500 text-center mt-2 mb-5">
+                                        {errorMessage}
+                                    </p>
                                 </div>
                                 <div>
                                     <label
