@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EditTaskType } from "./ToDo";
 
-const EditTask = ({ task, index, taskList, setTaskList }: EditTaskType) => {
+const EditTask = ({ task, taskList, setTaskList }: EditTaskType) => {
     const [editModal, setEditModal] = useState<boolean>(false);
     const [projectName, setProjectName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
@@ -24,7 +24,6 @@ const EditTask = ({ task, index, taskList, setTaskList }: EditTaskType) => {
         e.preventDefault();
         let taskIndex = taskList.indexOf(task);
         taskList.splice(taskIndex, 1);
-
         setTaskList([...taskList, { projectName, taskDescription }]);
         setEditModal(false);
     };

@@ -4,16 +4,15 @@ import AddTask from "./components/AddTask";
 import ToDo from "./components/ToDo";
 
 export interface TaskList {
+    id: number;
     projectName: string;
     taskDescription: string;
 }
 
-// export interface ToDo {
-//     key: number;
-//     task: object;
-// }
+
 
 export interface TaskType {
+    id: number;
     taskList: TaskList[];
     setTaskList: React.Dispatch<React.SetStateAction<any>>;
 }
@@ -27,7 +26,7 @@ function App() {
             <p className="text-xl pl-6">Hi there!</p>
             <div className="flex flex-row items-center">
                 <p className="text-xl pl-6">Click</p>
-                <AddTask taskList={taskList} setTaskList={setTaskList} />
+                <AddTask id={new Date().getTime()} taskList={taskList} setTaskList={setTaskList} />
                 <p className="text-xl my-2"> to add a new task</p>
             </div>
             <div>
@@ -36,7 +35,7 @@ function App() {
                 </h2>
                 {taskList.slice(0).reverse().map((task, i) => (
                     <>
-                        <ToDo key={new Date().getTime()} task={task} index={i} taskList={taskList} setTaskList={setTaskList} />
+                        <ToDo key={new Date().getTime()} id={new Date().getTime()} taskList={taskList} setTaskList={setTaskList} task={task}/>
                     </>
                 ))}
             </div>

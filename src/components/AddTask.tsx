@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TaskType } from "../App";
 
-const AddTask = ({ taskList, setTaskList }: TaskType) => {
+const AddTask = ({id, taskList, setTaskList }: TaskType) => {
     const [addModal, setAddModal] = useState<boolean>(false);
     const [projectName, setProjectName] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
