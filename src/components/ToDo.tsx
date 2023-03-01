@@ -1,6 +1,7 @@
 import EditTask from "./EditTask";
 import { TaskList } from "../App";
 import { useEffect, useState } from "react";
+import { useDrag } from "react-dnd";
 
 export interface EditTaskType {
     task: any;
@@ -12,6 +13,19 @@ export interface EditTaskType {
 const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
     const [time, setTime] = useState<number>(task.duration);
     const [running, setRunning] = useState<boolean>(false);
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: "todo",
+        item: {
+            id: task.id,
+            projectName: task.projectName,
+            taskDescription: task.taskDecsription,
+            timestamp: task.timestamp,
+            duration: task.duration,
+        },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    }));
 
     useEffect(() => {
         let interval: ReturnType<typeof setTimeout> = setTimeout(() => {}, 0);
@@ -54,7 +68,10 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
     };
 
     return (
-        <div className="flex flex-col items-start justify-start bg-white my-4 ml-6 py-4 px-6 w-3/4 max-w-lg">
+        <div
+            className="flex flex-col items-start justify-start bg-white my-4 py-4 px-6 w-3/4 max-w-lg"
+            ref={drag}
+        >
             <div className="flex flex-row w-full justify-between">
                 <p className="font-semibold text-xl">{task.projectName}</p>
                 <EditTask
@@ -65,8 +82,8 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
                 />
             </div>
             <p className="text-lg py-2">{task.taskDescription}</p>
-            <div className="w-full flex flex-row items-center justify-evenly">
-                <div className=" w-1/4 min-w-max text-xl font-semibold py-4">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-center sm:justify-evenly">
+                <div className="sm:w-1/4 min-w-max text-xl font-semibold py-4">
                     <span>
                         {("0" + Math.floor((time / 3600000) % 24)).slice(-2)}:
                     </span>
