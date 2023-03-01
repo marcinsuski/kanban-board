@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "./App.css";
 import AddTask from "./components/AddTask";
 import ToDo from "./components/ToDo";
@@ -8,6 +8,7 @@ export interface TaskList {
     projectName: string;
     taskDescription: string;
     timestamp: Date;
+    duration: number;
 }
 
 export interface TaskType {
@@ -18,7 +19,13 @@ export interface TaskType {
 
 function App() {
     const [taskList, setTaskList] = useState([]);
-    console.log(taskList);
+
+    useEffect(() => {
+        let array: string | null = localStorage.getItem("taskList");
+        if (array) {
+            setTaskList(JSON.parse(array));
+        }
+    }, []);
     return (
         <Fragment>
             <h1 className="text-2xl font-bold py-4 pl-6">Kanban Board</h1>

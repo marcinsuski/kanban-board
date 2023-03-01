@@ -10,7 +10,7 @@ export interface EditTaskType {
 }
 
 const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
-    const [time, setTime] = useState<number>(0);
+    const [time, setTime] = useState<number>(task.duration);
     const [running, setRunning] = useState<boolean>(false);
 
     useEffect(() => {
@@ -19,8 +19,7 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
             interval = setInterval(() => {
                 setTime((prevTime) => prevTime + 10);
             }, 10);
-        }
-         else if (!running) {
+        } else if (!running) {
             clearInterval(interval);
         }
         return () => {
@@ -28,14 +27,30 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
         };
     }, [running]);
 
+    const handleStop = () => {
+        setRunning(false);
+        let taskIndex = taskList.indexOf(task);
+        taskList.splice(taskIndex, 1, {
+            id: task.id,
+            projectName: task.projectName,
+            taskDescription: task.taskDescription,
+            timestamp: task.timestamp,
+            duration: time,
+        });
+        localStorage.setItem("taskList", JSON.stringify(taskList));
+        // window.location.reload();
+    };
+
     const handleDelete: React.Dispatch<React.SetStateAction<any>> = (
         itemId: number
     ) => {
         let removeIndex = taskList.indexOf(task);
         taskList.splice(removeIndex, 1);
-        setTaskList((currentTasks: TaskList[]) =>
-            currentTasks.filter((todo) => todo.id !== itemId)
-        );
+        localStorage.setItem("taskList", JSON.stringify(taskList));
+        window.location.reload();
+        // setTaskList((currentTasks: TaskList[]) =>
+        //     currentTasks.filter((todo) => todo.id !== itemId)
+        // );
     };
 
     return (
@@ -52,9 +67,15 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
             <p className="text-lg py-2">{task.taskDescription}</p>
             <div className="w-full flex flex-row items-center justify-evenly">
                 <div className=" w-1/4 min-w-max text-xl font-semibold py-4">
-                    <span>{("0" + Math.floor((time / 3600000) % 24)).slice(-2)}:</span>
-                    <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
-                    <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}:</span>
+                    <span>
+                        {("0" + Math.floor((time / 3600000) % 24)).slice(-2)}:
+                    </span>
+                    <span>
+                        {("0" + Math.floor((time / 60000) % 60)).slice(-2)}:
+                    </span>
+                    <span>
+                        {("0" + Math.floor((time / 1000) % 60)).slice(-2)}:
+                    </span>
                     <span className="text-sm">
                         {("0" + Math.floor((time / 10) % 100)).slice(-2)}
                     </span>
@@ -63,7 +84,7 @@ const ToDo = ({ id, task, taskList, setTaskList }: EditTaskType) => {
                     {running ? (
                         <button
                             className="border rounded-lg py-1 px-3"
-                            onClick={() => setRunning(false)}
+                            onClick={handleStop}
                         >
                             Stop
                         </button>

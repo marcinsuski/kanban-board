@@ -9,8 +9,7 @@ const EditTask = ({ task, taskList, setTaskList }: EditTaskType) => {
     useEffect(() => {
         setProjectName(task.projectName);
         setTaskDescription(task.taskDescription);
-
-    }, [])
+    }, []);
 
     const handleInput = (e: React.SyntheticEvent) => {
         let target = e.target as HTMLInputElement;
@@ -23,8 +22,16 @@ const EditTask = ({ task, taskList, setTaskList }: EditTaskType) => {
     const handleUpdate = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         let taskIndex = taskList.indexOf(task);
-        taskList.splice(taskIndex, 1);
-        setTaskList([...taskList, { projectName, taskDescription }]);
+        taskList.splice(taskIndex, 1, {
+            id: task.id,
+            projectName: projectName,
+            taskDescription: taskDescription,
+            timestamp: task.timestamp,
+            duration: task.duration,
+        });
+        localStorage.setItem("taskList", JSON.stringify(taskList));
+        window.location.reload();
+        // setTaskList([...taskList, { projectName, taskDescription }]);
         setEditModal(false);
     };
 
