@@ -13,8 +13,8 @@ const AddTask = ({ id, taskList, setTaskList }: TaskType) => {
 
         if (name === "projectName") {
             setProjectName(value);
-            setErrorMessage("")    
-        };
+            setErrorMessage("");
+        }
         if (name === "projectName" && value === "") {
             setErrorMessage("Enter project name to continiue");
         }
@@ -26,7 +26,8 @@ const AddTask = ({ id, taskList, setTaskList }: TaskType) => {
         if (!projectName) {
             setErrorMessage("Enter project name to continiue");
         } else {
-            setTaskList([...taskList, { projectName, taskDescription }]);
+            let timestamp = new Date().getTime();
+            setTaskList([...taskList, { projectName, taskDescription, timestamp: timestamp }]);
             setAddModal(false);
             setProjectName("");
             setTaskDescription("");
