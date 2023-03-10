@@ -50,6 +50,8 @@ function App() {
             ...completed,
             { moveTask, id, projectName, taskDescription, timestamp, duration },
         ]);
+        localStorage.setItem("completed", JSON.stringify(completed));
+
     };
 
     useEffect(() => {
